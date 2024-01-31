@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import ShowCard from "../../components/ShowCard/ShowCard";
 
 const Shows = () => {
-  const { data: shows = [], isLoading: loading } = useQuery({
+  const { data: shows = [] } = useQuery({
     queryKey: ["shows"],
     queryFn: async () => {
       const res = await fetch("https://api.tvmaze.com/search/shows?q=all");
