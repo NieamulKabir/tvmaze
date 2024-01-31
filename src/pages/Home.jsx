@@ -1,11 +1,13 @@
-
+import Banner from "./Banner/Banner";
+import Shows from "./Shows/Shows";
 
 const Home = () => {
-    return (
-        <div>
-            <h1>Home</h1>
-        </div>
-    );
+  return (
+    <div className="mt-16">
+      <Banner />
+      <Shows />
+    </div>
+  );
 };
 
 export default Home;
