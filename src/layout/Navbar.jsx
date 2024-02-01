@@ -26,7 +26,7 @@ const Navbar = () => {
         <ul className="list-none hidden sm:flex flex-row gap-8 text-white">
           <li
             className={`${
-              active === "/home" ? "text-green-300" : "text-white"
+              active === "/home" ? "text-[#38b6aa]" : "text-white"
             } hover:text-white text-[18px] font-medium cursor-pointer`}
             onClick={() => setActive("/home")}
           >
