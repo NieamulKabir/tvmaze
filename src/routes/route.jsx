@@ -3,6 +3,7 @@ import App from "../App";
 import Home from "../pages/Home";
 import ShowDetails from "../pages/ShowDetails/ShowDetails";
 import Shows from "../pages/Shows/Shows";
+import NotFound from "../pages/NotFound/NotFound";
 
 const routes = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const routes = createBrowserRouter([
       {
         path: "/shows/:showId",
         element: <ShowDetails />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },

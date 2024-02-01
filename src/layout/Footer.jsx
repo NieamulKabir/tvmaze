@@ -6,10 +6,10 @@ const Footer = () => {
     <div className="">
       <footer className="footer items-center p-4 bg-neutral text-neutral-content">
         <aside className="items-center grid-flow-col">
-        <img  className="h-10 w-20 ml-16" src={logo} alt="" />
+        <img  className="h-8 md:h-10 w-10 md:w-20 md:ml-16" src={logo} alt="" />
           <p>Copyright © 2024 - All right reserved</p>
         </aside>
-        <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end mr-16">
+        <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end md:mr-16">
           <a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
