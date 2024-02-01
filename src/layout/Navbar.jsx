@@ -34,6 +34,16 @@ const Navbar = () => {
               <button className="">Home</button>
             </NavLink>
           </li>
+          <li
+            className={`${
+              active === "/shows" ? "text-[#38b6aa]" : "text-white"
+            } hover:text-white text-[18px] font-medium cursor-pointer`}
+            onClick={() => setActive("/shows")}
+          >
+            <NavLink to="/shows">
+              <button className="">Shows</button>
+            </NavLink>
+          </li>
           
           {/* login  */}
         </ul>
@@ -59,6 +69,16 @@ const Navbar = () => {
               >
                 <NavLink to="/home">
                   <button className="">Home</button>
+                </NavLink>
+              </li>
+              <li
+                className={`${
+                  active === "/shows" ? "text-green-300" : "text-white"
+                } hover:text-white text-[18px] font-medium cursor-pointer`}
+                onClick={() => setActive("/shows")}
+              >
+                <NavLink to="/shows">
+                  <button className="">Shows</button>
                 </NavLink>
               </li>
               

@@ -11,8 +11,8 @@ const Shows = () => {
   });
 
   return (
-    <div className="mx-6 my-10">
-      <h1 className="text-5xl font-semibold my-4">Shows</h1>
+    <div className="mx-6 mt-20 mb-16">
+      <h1 className="text-5xl font-semibold my-10">Shows</h1>
       <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
         {shows?.map((show, index) => (
           <ShowCard key={index} show={show}></ShowCard>
