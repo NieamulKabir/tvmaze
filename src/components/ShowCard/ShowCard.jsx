@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 // eslint-disable-next-line react/prop-types
 const ShowCard = ({ show }) => {
 
-  const { id, name, type, image } = show.show;
+  const { id, name, type, image ,language} = show.show;
 
   return (
     <div>
@@ -19,8 +19,9 @@ const ShowCard = ({ show }) => {
         </figure>
         <div className="card-body">
           <h2 className="card-title">{name}</h2>
-          <p className="text-[#35a79b] font-medium">{type}</p>
-          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <p className=" font-medium"> <b>Type:</b> <span className="text-[#35a79b]">{type}</span></p>
+          <p className=" font-medium"> <b>Language:</b> <span className="text-[#35a79b]">{language}</span></p>
+          
           <div className="card-actions justify-end">
             <NavLink to={`/shows/${id}`}>
               <button className="btn bg-gray-800 text-white hover:bg-gray-700">

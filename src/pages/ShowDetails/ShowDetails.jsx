@@ -47,8 +47,7 @@ const ShowDetails = () => {
       status,
       rating,
     };
-    console.log(bookTicket);
-
+   
     // Retrieve existing tickets from local storage
     const tickets = JSON.parse(localStorage.getItem("tickets")) || [];
 
@@ -77,7 +76,7 @@ const ShowDetails = () => {
     : "";
 
   return (
-    <div>
+    <div className="my-10">
       <h1 className="mt-16 w-[90%] mx-auto py-6 text-4xl font-bold">
         Show Details - <span className="text-[#38b6aa]">{name}</span>
       </h1>
