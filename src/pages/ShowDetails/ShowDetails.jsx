@@ -1,22 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
-
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const ShowDetails = () => {
-  const { id } = useParams();
+  const { showId } = useParams();
+  const [show, setShow] = useState({});
 
-  const { data: show = {} } = useQuery({
-    queryKey: ["show"],
-    queryFn: async () => {
-      const res = await fetch("https://api.tvmaze.com/search/shows?q=all");
-      const allShow = await res.json();
-      const data = allShow?.map((item) => item?.show);
-      const sortedData = data?.find((i) => i.id == id);
-      return sortedData;
-    },
-  });
+  //load single data
+  useEffect(() => {
+    fetch("https://api.tvmaze.com/search/shows?q=all")
+      .then((res) => res?.json())
+      .then((result) => {
+        const data = result?.map((item) => item?.show);
+        const sortedData = data?.find((i) => i.id == showId);
+        setShow(sortedData);
+      });
+  }, [showId]);
 
   const {
+    id,
     image,
     name,
     summary,
@@ -32,32 +35,52 @@ const ShowDetails = () => {
     rating,
   } = show;
 
+  const { register, handleSubmit, reset } = useForm();
   // booking functionality
-  const handleBook = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const name = form.name.value;
-    const schedule = form.schedule.value;
-    const status = form.status.value;
-    const rating = form.rating.value;
-
+  const onSubmit = (data) => {
     const bookTicket = {
+      id,
+      userName: data.name,
+      email: data.email,
       name,
       schedule,
       status,
       rating,
     };
-
     console.log(bookTicket);
+
+    // Retrieve existing tickets from local storage
+    const tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+
+    if (tickets.length > 0) {
+      const isExist = tickets.find((b) => b.id === id);
+      console.log(isExist);
+      if (isExist) {
+        toast.error("Already Booked");
+        return;
+      } else {
+        localStorage.setItem(
+          "tickets",
+          JSON.stringify([...tickets, bookTicket])
+        );
+      }
+    } else {
+      // If there are no existing tickets, simply add the new ticket to the local storage
+      localStorage.setItem("tickets", JSON.stringify([bookTicket]));
+    }
+
+    toast.success("Ticket successfully Booked...");
   };
 
   const defaultSchedule = schedule
-    ? `${schedule.days[0]} at ${schedule.time}`
+    ? `${schedule?.days[0]} at ${schedule?.time}`
     : "";
 
   return (
     <div>
-      <h1 className="mt-16 w-[90%] mx-auto py-6 text-4xl font-bold">Show Details - <span className="text-[#38b6aa]">{name}</span></h1>
+      <h1 className="mt-16 w-[90%] mx-auto py-6 text-4xl font-bold">
+        Show Details - <span className="text-[#38b6aa]">{name}</span>
+      </h1>
       <div className="w-[90%] mx-auto  text-black lg:flex">
         <div className="hero min-h-screen bg-gray-300 rounded-xl">
           <div className="hero-content flex-col lg:flex-row">
@@ -70,7 +93,13 @@ const ShowDetails = () => {
                 <b className="text-lg">{name}</b> {summary}
               </p>
               {/* booking ticket form using a modal  */}
-              <form onSubmit={handleBook}>
+              <form
+                onSubmit={handleSubmit((data) => {
+                  onSubmit(data);
+
+                  reset();
+                })}
+              >
                 <div className="card-actions justify-end">
                   {/* The button to open modal */}
 
@@ -83,7 +112,33 @@ const ShowDetails = () => {
                   <div className="modal modal-bottom sm:modal-middle text-black">
                     <div className="modal-box relative md:mr-44 bg-gray-800 text-black">
                       <input
+                        {...register("name")}
                         name="name"
+                        type="name"
+                        placeholder="User Name"
+                        className="input w-full input-bordered my-1 text-black font-semibold"
+                        required
+                      />
+                      <input
+                        {...register("email")}
+                        name="email"
+                        type="email"
+                        placeholder="Enter Your Email"
+                        className="input w-full input-bordered my-1 text-black font-semibold"
+                        required
+                      />
+                      <input
+                        {...register("movieId")}
+                        name="movieId"
+                        type="text"
+                        defaultValue={id}
+                        placeholder="ID"
+                        className="input w-full input-bordered my-1 text-black font-semibold"
+                        required
+                      />
+                      <input
+                        {...register("movieName")}
+                        name="movieName"
                         type="text"
                         defaultValue={name}
                         placeholder="Movie Name"
@@ -91,6 +146,7 @@ const ShowDetails = () => {
                         required
                       />
                       <input
+                        {...register("schedule")}
                         name="schedule"
                         type="schedule"
                         defaultValue={defaultSchedule}
@@ -99,6 +155,7 @@ const ShowDetails = () => {
                       />
                       <br />
                       <input
+                        {...register("rating")}
                         name="rating"
                         type="rating"
                         defaultValue={rating?.average}
@@ -107,6 +164,7 @@ const ShowDetails = () => {
                       />
                       <br />
                       <input
+                        {...register("status")}
                         name="status"
                         type="status"
                         defaultValue={status}
@@ -117,7 +175,7 @@ const ShowDetails = () => {
                       <input
                         className="btn w-[40%] absolute right-[30%] mt-4"
                         type="submit"
-                        value="Submit"
+                        value="Book"
                       />{" "}
                       <br />
                       <div className="modal-action mb-4">
